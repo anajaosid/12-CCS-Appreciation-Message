@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#7c3aed">
+<title>12-CCS</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root{
+  --purple:#7c3aed;
+  --purple-dark:#5b21b6;
+  --pink:#ec4899;
+  --gold:#f59e0b;
+  --cream:#fffaf5;
+  --ink:#211b2d;
+  --muted:#746b80;
+  --card:#ffffffee;
+  --border:#eadff4;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"DM Sans",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%,#f0e7ff 0,transparent 30%),
+    radial-gradient(circle at 90% 20%,#ffe4f1 0,transparent 28%),
+    linear-gradient(135deg,#fffaf5 0%,#f8f3ff 52%,#fff5f9 100%);
+  overflow-x:hidden;
+}
+
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  filter:blur(70px);
+  opacity:.35;
+  z-index:-1;
+}
+body::before{background:#c4b5fd;left:-120px;top:45%}
+body::after{background:#f9a8d4;right:-120px;top:70%}
+
+.container{
+  width:min(920px,100%);
+  margin:auto;
+  padding:22px 18px 60px;
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  text-align:center;
+  padding:48px 18px 34px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:#ffffffc9;
+  border:1px solid var(--border);
+  box-shadow:0 8px 25px #5b21b610;
+  color:var(--purple-dark);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.hero-icon{
+  font-size:65px;
+  margin:18px 0 5px;
+  filter:drop-shadow(0 10px 12px #7c3aed25);
+}
+
+h1{
+  margin:4px 0 12px;
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(42px,9vw,72px);
+  line-height:1;
+  letter-spacing:-.04em;
+  background:linear-gradient(90deg,#5b21b6,#c026d3,#db2777);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  max-width:610px;
+  margin:0 auto;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:16px;
+}
+
+/* CARDS */
+.card{
+  position:relative;
+  margin:18px 0;
+  padding:28px;
+  background:var(--card);
+  border:1px solid #ffffff;
+  border-radius:28px;
+  box-shadow:
+    0 18px 55px #4c1d9512,
+    0 3px 10px #4c1d9509;
+  backdrop-filter:blur(12px);
+}
+
+.card h2{
+  margin:0 0 8px;
+  font-size:23px;
+  letter-spacing:-.02em;
+}
+
+.card-intro{
+  margin:0 0 23px;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+}
+
+/* FORM */
+.field{margin-bottom:19px}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:700;
+}
+
+input,textarea{
+  display:block;
+  width:100%;
+  border:1.5px solid var(--border);
+  background:#fff;
+  color:var(--ink);
+  border-radius:15px;
+  padding:14px 15px;
+  font:inherit;
+  font-size:15px;
+  outline:none;
+  transition:.2s ease;
+  box-shadow:0 4px 15px #4c1d9506;
+}
+
+input::placeholder,textarea::placeholder{color:#aaa2b1}
+
+input:focus,textarea:focus{
+  border-color:#a78bfa;
+  box-shadow:0 0 0 4px #8b5cf61a;
+}
+
+textarea{
+  min-height:145px;
+  resize:vertical;
+  line-height:1.55;
+}
+
+.char{
+  text-align:right;
+  margin-top:5px;
+  color:#a49aa9;
+  font-size:12px;
+}
+
+/* BUTTONS */
+button{
+  border:0;
+  border-radius:14px;
+  padding:14px 20px;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.03);
+}
+
+button:active{transform:translateY(0)}
+
+.primary{
+  width:100%;
+  color:white;
+  background:linear-gradient(100deg,var(--purple),#a855f7,var(--pink));
+  box-shadow:0 10px 25px #7c3aed30;
+}
+
+.secondary{
+  background:#f5effc;
+  color:var(--purple-dark);
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* RESULT */
+#result{display:none}
+
+.result-top{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.success-icon{
+  width:58px;
+  height:58px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 12px;
+  border-radius:18px;
+  background:#f1e8ff;
+  font-size:29px;
+}
+
+#result h2{margin-bottom:5px}
+
+#qr{
+  display:block;
+  width:min(250px,75vw);
+  aspect-ratio:1;
+  margin:20px auto;
+  padding:10px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 12px 35px #4c1d9518;
+}
+
+.linkbox{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  background:#faf7fc;
+  border:1px solid var(--border);
+  border-radius:13px;
+  color:#665d70;
+  font-size:12px;
+  line-height:1.5;
+  word-break:break-all;
+}
+
+.result-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+
+.result-buttons button{width:100%}
+
+/* VIEW MESSAGE */
+#viewCard{display:none}
+
+.message-paper{
+  position:relative;
+  margin-top:20px;
+  padding:28px 25px;
+  border-radius:20px;
+  background:
+    linear-gradient(#fffdf9,#fffdf9),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      #eee4d8 32px
+    );
+  box-shadow:inset 0 0 0 1px #eadfd2;
+}
+
+.message-paper::before{
+  content:"“";
+  position:absolute;
+  right:20px;
+  top:-15px;
+  font-family:Georgia,serif;
+  font-size:90px;
+  color:#eadcff;
+}
+
+.message-name{
+  position:relative;
+  color:var(--purple-dark);
+  font-weight:700;
+  margin-bottom:13px;
+}
+
+.message-text{
+  position:relative;
+  white-space:pre-wrap;
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:20px;
+  line-height:1.65;
+}
+
+.write-again{
+  margin-top:18px;
+  width:100%;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:24px 10px 0;
+  color:#81778b;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.footer strong{color:#6b21a8}
+
+/* DECOR */
+.sparkle{
+  position:absolute;
+  pointer-events:none;
+  opacity:.65;
+  font-size:20px;
+  animation:float 4s ease-in-out infinite;
+}
+.s1{left:7%;top:28%;animation-delay:.4s}
+.s2{right:9%;top:18%;animation-delay:1.2s}
+.s3{right:15%;bottom:5%;animation-delay:2s}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-8px) rotate(7deg)}
+}
+
+@media(max-width:560px){
+  .container{padding:10px 13px 45px}
+  .hero{padding:42px 8px 27px}
+  .hero-icon{font-size:53px}
+  .card{padding:21px;border-radius:22px}
+  .result-buttons{grid-template-columns:1fr}
+  .message-text{font-size:18px}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <section class="hero">
+    <span class="sparkle s1">✦</span>
+    <span class="sparkle s2">✧</span>
+    <span class="sparkle s3">✦</span>
+
+    <div class="badge">12-CCS Message</div>
+    <div class="hero-icon">🍎</div>
+
+    <h1>Thank You, Teacher.</h1>
+
+    <p>
+      A simple message can mean a lot.
+      Write something from the heart and create a QR code that your teacher can scan.
+    </p>
+  </section>
+
+  <!-- MESSAGE CREATOR -->
+  <section class="card">
+    <h2>💌 Send a little appreciation</h2>
+    <p class="card-intro">
+      Write your message below. No account, login, or database is required.
+      Your message will be placed directly inside the shareable link.
+    </p>
+
+    <div class="field">
+      <label for="name">Your name</label>
+      <input id="name" maxlength="60" placeholder="e.g. 12-CCS" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="message">Your message</label>
+      <textarea id="message" maxlength="1000"
+        placeholder="Dear Ma'am/Sir, thank you for teaching, guiding, and inspiring us..."></textarea>
+      <div class="char"><span id="count">0</span>/1000</div>
+    </div>
+
+    <button class="primary" onclick="createMessage()">
+      Create My Message ✨
+    </button>
+  </section>
+
+  <!-- GENERATED QR -->
+  <section class="card" id="result">
+    <div class="result-top">
+      <div class="success-icon">🎉</div>
+      <h2>Your message is ready!</h2>
+      <p class="card-intro">Let your teacher scan this QR code to read your message.</p>
+    </div>
+
+    <img id="qr" alt="QR code for your Teachers' Day message">
+
+    <div class="linkbox" id="shareLink"></div>
+
+    <div class="result-buttons">
+      <button class="primary" onclick="copyLink()">🔗 Copy Link</button>
+      <button class="secondary" onclick="downloadQR()">📱 Open QR</button>
+    </div>
+  </section>
+
+  <!-- MESSAGE VIEW -->
+  <section class="card" id="viewCard">
+    <div class="result-top">
+      <div class="success-icon">💜</div>
+      <h2>A Message for Our Teacher</h2>
+      <p class="card-intro">Someone wanted you to know how much your work is appreciated.</p>
+    </div>
+
+    <div class="message-paper">
+      <div class="message-name" id="viewName"></div>
+      <div class="message-text" id="viewMessage"></div>
+    </div>
+
+    <button class="secondary write-again" onclick="location.href=location.pathname">
+      ✍️ Write Your Own Message
+    </button>
+  </section>
+
+  <footer class="footer">
+    Made with <strong>💜 appreciation</strong> for our teachers.<br>
+  </footer>
+
+</div>
+
+<script>
+function encodeData(obj){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))
+    .replace(/\+/g,'-')
+    .replace(/\//g,'_')
+    .replace(/=+$/,'');
+}
+
+function decodeData(str){
+  try{
+    str=str.replace(/-/g,'+').replace(/_/g,'/');
+    while(str.length%4) str+='=';
+    return JSON.parse(decodeURIComponent(escape(atob(str))));
+  }catch(e){
+    return null;
+  }
+}
+
+function createMessage(){
+  const name=document.getElementById('name').value.trim() || 'A student';
+  const message=document.getElementById('message').value.trim();
+
+  if(!message){
+    alert('Please write a message first. 💜');
+    document.getElementById('message').focus();
+    return;
+  }
+
+  const data=encodeData({n:name,m:message});
+  const url=location.origin+location.pathname+'#message='+data;
+
+  /*
+    QR image is generated by QRServer.
+    The actual message itself is NOT stored on the QR service;
+    the QR simply contains the shareable URL.
+  */
+  const qr='https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=15&data='
+    +encodeURIComponent(url);
+
+  document.getElementById('shareLink').textContent=url;
+  document.getElementById('qr').src=qr;
+  document.getElementById('result').style.display='block';
+
+  history.replaceState(null,'','#message='+data);
+
+  document.getElementById('result').scrollIntoView({
+    behavior:'smooth',
+    block:'start'
+  });
+}
+
+function copyLink(){
+  const link=document.getElementById('shareLink').textContent;
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link)
+      .then(()=>alert('Link copied! You can now send it to your teacher. 💜'))
+      .catch(()=>fallbackCopy(link));
+  }else{
+    fallbackCopy(link);
+  }
+}
+
+function fallbackCopy(text){
+  const input=document.createElement('textarea');
+  input.value=text;
+  document.body.appendChild(input);
+  input.select();
+  document.execCommand('copy');
+  input.remove();
+  alert('Link copied!');
+}
+
+function downloadQR(){
+  window.open(document.getElementById('qr').src,'_blank');
+}
+
+function showMessage(){
+  const prefix='#message=';
+  if(!location.hash.startsWith(prefix)) return;
+
+  const raw=location.hash.substring(prefix.length);
+  const data=decodeData(raw);
+
+  if(!data || !data.m) return;
+
+  document.getElementById('viewCard').style.display='block';
+  document.getElementById('viewName').textContent=(data.n || 'A student')+' says:';
+  document.getElementById('viewMessage').textContent=data.m;
+
+  setTimeout(()=>{
+    document.getElementById('viewCard').scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+  },150);
+}
+
+document.getElementById('message').addEventListener('input',function(){
+  document.getElementById('count').textContent=this.value.length;
+});
+
+showMessage();
+</script>
+</body>
+</html>
